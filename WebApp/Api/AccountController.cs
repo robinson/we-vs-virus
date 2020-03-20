@@ -7,7 +7,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using AutoMapper;
-using WeVsVirus.Models;
+using WeVsVirus.Models.Entities;
 using WeVsVirus.DataAccess.Repositories;
 using WeVsVirus.Business.Exceptions;
 using WeVsVirus.Business.Utility;

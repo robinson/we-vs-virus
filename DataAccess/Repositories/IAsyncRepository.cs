@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WeVsVirus.DataAccess.Specifications;
-using WeVsVirus.Models;
+using WeVsVirus.Models.Entities;
 
 namespace WeVsVirus.DataAccess.Repositories
 {

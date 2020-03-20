@@ -1,4 +1,4 @@
-namespace WeVsVirus.Models
+namespace WeVsVirus.Models.Entities
 {
     public class BaseEntity
     {

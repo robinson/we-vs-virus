@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WeVsVirus.DataAccess.DatabaseContext;
 using WeVsVirus.DataAccess.Specifications;
-using WeVsVirus.Models;
+using WeVsVirus.Models.Entities;
 
 namespace WeVsVirus.DataAccess.Repositories
 {

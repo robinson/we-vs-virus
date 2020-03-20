@@ -1,7 +1,7 @@
 using System.Linq;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using WeVsVirus.Models;
+using WeVsVirus.Models.Entities;
 
 namespace WeVsVirus.DataAccess.DatabaseContext
 {

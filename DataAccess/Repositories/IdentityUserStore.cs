@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using WeVsVirus.Models;
+using WeVsVirus.Models.Entities;
 
 namespace WeVsVirus.DataAccess.Repositories
 {

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WeVsVirus.Models;
+using WeVsVirus.Models.Entities;
 using WeVsVirus.DataAccess.Repositories;
 using WeVsVirus.DataAccess.DatabaseContext;
 

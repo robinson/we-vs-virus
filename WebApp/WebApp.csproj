@@ -11,7 +11,6 @@
     <BuildServerSideRenderer>false</BuildServerSideRenderer>
     <StyleCopTreatErrorsAsWarnings>false</StyleCopTreatErrorsAsWarnings>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-    <UserSecretsId>1254cc1b-53ee-4bad-87e7-384d1d73e7f3</UserSecretsId>
     <OpenApiGenerateDocuments>false</OpenApiGenerateDocuments>
     <RootNamespace>WeVsVirus.WebApp</RootNamespace>
   </PropertyGroup>

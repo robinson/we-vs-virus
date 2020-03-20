@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 
-namespace WeVsVirus.Models
+namespace WeVsVirus.Models.Entities
 {
     public class AppUser : IdentityUser
     {

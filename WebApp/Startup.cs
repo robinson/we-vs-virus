@@ -14,7 +14,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.DataProtection;
 using WeVsVirus.DataAccess.Repositories;
-using WeVsVirus.Models;
+using WeVsVirus.Models.Entities;
 using WeVsVirus.Business.Utility;
 using WeVsVirus.Business.Mappers;
 using System.Reflection;
@@ -87,7 +87,7 @@ namespace WeVsVirus.WebApp
                 .PersistKeysToDbContext<DataProtectionKeyContext>();
             }
             catch {
-                Console.WriteLine("Could not connect to Database. Did you forget the connection string?");
+                Console.Error.Write("Could not connect to Database. Did you forget the connection string?");
             }
         }
 
