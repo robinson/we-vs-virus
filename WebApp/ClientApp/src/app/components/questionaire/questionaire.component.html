@@ -1,0 +1,34 @@
+<h2>Bitte beantworten Sie die folgenden Fragen</h2>
+
+<div class="row itemArea">
+  <div class="col-md-12">
+    <app-item-age *ngIf="item===0" [itemValue]="questionaire.ageCategory"
+      (itemChanged)="questionaire.ageCategory = $event"></app-item-age>
+
+    <app-item-residential-situation *ngIf="item===1" [itemValue]="questionaire.residentialSituation"
+      (itemChanged)="questionaire.residentialSituation = $event"></app-item-residential-situation>
+
+    <app-item-working-situation *ngIf="item===2" [itemValue]="questionaire.workingSituation"
+      (itemChanged)="questionaire.workingSituation = $event"></app-item-working-situation>
+
+    <app-item-smoking-situation *ngIf="item===3" [itemValue]="questionaire.smokingSituation"
+      (itemChanged)="questionaire.smokingSituation = $event"></app-item-smoking-situation>
+
+    <app-item-traveled *ngIf="item===4" [itemValue]="questionaire.traveled"
+      (itemChanged)="questionaire.traveled = $event"></app-item-traveled>
+
+    <app-item-heinsberg *ngIf="item===5" [itemValue]="questionaire.heinsberg" (itemChanged)="questionaire.heinsberg = $event"
+      [returnDate]="questionaire.backFromHeinsberg" (textChanged)="questionaire.backFromHeinsberg = $event">
+    </app-item-heinsberg>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-2">
+    <button class="btn btn-primary" (click)="back()">Zurück</button>
+  </div>
+  <div class="col-md-2">
+    <button class="btn btn-primary" (click)="next()">Weiter</button>
+  </div>
+</div>

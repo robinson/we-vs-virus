@@ -1,13 +1,38 @@
-version: "3"
+version: "3.7"
 services:
     web:
+        build:
+            context: .
+            dockerfile: WebApp/dockerfile
+        volumes:
+            - '.:/WebApp/ClientApp'
+            - 'WebApp/ClientApp/node_modules'
+        ports:
+            - '4200:4200'
+        command: yarn run start
+    api:
         build: .
         ports:
-            - "5000:80"
+            - "5000:5000"
+            - "5001:5001"
         depends_on:
             - db
+        networks:
+            mynetwork:
+                aliases:
+                - web1.internal.prod.example.com
     db:
         image: "mcr.microsoft.com/mssql/server:2019-latest"
+        ports:
+            - "1433:1433"
         environment:
-            SA_PASSWORD: "sa"
+            MSSQL_SA_PASSWORD: Test12341234
             ACCEPT_EULA: "Y"
+        networks:
+            mynetwork:
+                aliases:
+                - db1.internal.prod.example.com
+networks:
+    mynetwork:
+        driver: bridge
+          

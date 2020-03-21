@@ -12,28 +12,33 @@ using WeVsVirus.Business.Utility;
 using WeVsVirus.Business.ViewModels;
 using WeVsVirus.Models.Entities;
 using WeVsVirus.Business.Exceptions;
+using WeVsVirus.DataAccess;
 
 namespace WeVsVirus.Business.Services
 {
     public interface IAuthService
     {
-        Task<string> LoginAsync(LoginViewModel loginViewModel);
+        Task<object> LoginAsync(LoginViewModel loginViewModel);
+        Task ResetPasswordAsync(ResetPasswordViewModel model);
     }
     public class AuthService : IAuthService
     {
         public AuthService(
+            IUnitOfWork unitOfWork,
             IJwtFactory jwtFactory,
             IOptions<JwtIssuerOptions> jwtOptions,
             UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
             ILogger<AuthService> logger)
         {
+            UnitOfWork = unitOfWork;
             JwtOptions = jwtOptions.Value;
             UserManager = userManager;
             SignInManager = signInManager;
             JwtFactory = jwtFactory;
             Logger = logger;
         }
+        private IUnitOfWork UnitOfWork { get; }
 
         private UserManager<AppUser> UserManager { get; }
 
@@ -44,7 +49,7 @@ namespace WeVsVirus.Business.Services
         private JwtIssuerOptions JwtOptions { get; }
         private ILogger<AuthService> Logger { get; }
 
-        public async Task<string> LoginAsync(LoginViewModel loginViewModel)
+        public async Task<object> LoginAsync(LoginViewModel loginViewModel)
         {
             var result = await SignInManager.PasswordSignInAsync(loginViewModel.Email, loginViewModel.Password, loginViewModel.RememberMe, lockoutOnFailure: false);
             if (result.Succeeded)
@@ -70,6 +75,33 @@ namespace WeVsVirus.Business.Services
                     throw new InvalidEmailAndPasswordCombinationHttpException();
                 }
             }
+        }
+
+
+        public async Task ResetPasswordAsync(ResetPasswordViewModel model)
+        {
+            var user = await UserManager.FindByNameAsync(model.Email);
+            if (user == null)
+            {
+                throw new NotFoundHttpException("Benutzer");
+            }
+
+            if (string.Compare(model.NewPassword, model.ConfirmPassword, false) != 0)
+            {
+                throw new BadRequestHttpException("Passwörter stimmen nicht überein.");
+            }
+
+            var unescapedToken = Uri.UnescapeDataString(model.Token);
+            var confirmResult = await UserManager.ResetPasswordAsync(user, unescapedToken, model.NewPassword);
+            if (!confirmResult.Succeeded)
+            {
+                if (confirmResult.Errors.First(err => err.Code == IdentityErrorCodes.InvalidToken) != null)
+                {
+                    throw new InvalidTokenHttpException();
+                }
+                throw new InternalServerErrorHttpException("Interner Fehler beim Ändern eines Passworts");
+            }
+            await UnitOfWork.CompleteAsync();
         }
 
 

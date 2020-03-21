@@ -1,0 +1,161 @@
+@import '~@angular/material/theming';
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat-core();
+
+$md-lightgreen: (
+    50 : #f1f8e9,
+    100 : #dcedc9,
+    200 : #c5e1a5,
+    300 : #aed580,
+    400 : #9ccc65,
+    500 : #8bc34a,
+    600 : #83bd43,
+    700 : #78b53a,
+    800 : #6eae32,
+    900 : #5ba122,
+    A100 : #ebffdd,
+    A200 : #ceffaa,
+    A400 : #b0ff77,
+    A700 : #a2ff5d,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #000000,
+        600 : #000000,
+        700 : #000000,
+        800 : #000000,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+$md-red: (
+    50 : #ffeaea,
+    100 : #ffcbcb,
+    200 : #ffa9a9,
+    300 : #ff8686,
+    400 : #ff6c6c,
+    500 : #ff5252,
+    600 : #ff4b4b,
+    700 : #ff4141,
+    800 : #ff3838,
+    900 : #ff2828,
+    A100 : #ffffff,
+    A200 : #ffffff,
+    A400 : #ffd5d5,
+    A700 : #ffbcbc,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #000000,
+        600 : #000000,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+$md-skyprimary: (
+    50 : #e3eff0,
+    100 : #b9d6d9,
+    200 : #8bbbc0,
+    300 : #5c9fa6,
+    400 : #398b93,
+    500 : #167680,
+    600 : #136e78,
+    700 : #10636d,
+    800 : #0c5963,
+    900 : #064650,
+    A100 : #84ebff,
+    A200 : #51e3ff,
+    A400 : #1edbff,
+    A700 : #04d7ff,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+
+$md-skyaccent: (
+    50 : #fff2f1,
+    100 : #fededd,
+    200 : #fec8c6,
+    300 : #feb1af,
+    400 : #fda19e,
+    500 : #fd908d,
+    600 : #fd8885,
+    700 : #fc7d7a,
+    800 : #fc7370,
+    900 : #fc615d,
+    A100 : #ffffff,
+    A200 : #ffffff,
+    A400 : #fffdfd,
+    A700 : #ffe4e4,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #000000,
+        600 : #000000,
+        700 : #000000,
+        800 : #000000,
+        900 : #000000,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue.
+$primary:  mat-palette($mat-pink);
+// $accent: mat-palette($md-skyaccent);
+// $primary:  mat-palette($mat-cyan);
+$accent: mat-palette($mat-blue-grey);
+
+// The warn palette is optional (defaults to red).
+$warn:    mat-palette($mat-red);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$theme: mat-light-theme($primary, $accent, $warn);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($theme);
