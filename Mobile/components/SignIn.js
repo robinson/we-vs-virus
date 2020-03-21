@@ -12,7 +12,7 @@ function SignIn({navigation}) {
 
   const signIn = async () => {
     try{
-      const response=await fetch('https://localhost:5001/api/driver/auth', {
+      const response=await fetch('https://localhost:5001/api/driveraccount/auth ', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
