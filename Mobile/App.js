@@ -5,7 +5,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Wir kämpfen </Text>
-      <Text style={styles.text}> gegen CORONA </Text>
+      <Text style={styles.text}> gegen CORONA! </Text>
     </View>
   );
 }
