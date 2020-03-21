@@ -1,26 +1,46 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import * as React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import Home from "./components/Home";
+import Loading from "./components/Loading";
+import SignIn from "./components/SignIn";
+import * as SecureStore from "expo-secure-store";
+const Stack = createStackNavigator();
 
-export default function App() {
+function MainStackNavigator() {
+  const [token, setToken] = React.useState("");
+  React.useEffect(() => {
+    // Fetch the token from storage then navigate to our appropriate place
+    const bootstrapAsync = async () => {
+      let userToken;
+      try {
+        userToken = await SecureStore.getItemAsync("userToken");
+        setToken(userToken);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    bootstrapAsync();
+  }, []);
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Wir kämpfen </Text>
-      <Text style={styles.text}> gegen CORONA </Text>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        {!token ? (
+          <Stack.Screen name="SignIn" component={SignIn} />
+        ) : (
+          <>
+            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen
+              name="Loading"
+              component={Loading}
+            />
+          </>
+        )}
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'blue',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  text:{
-    fontSize:30,
-    color:'white',
-    alignItems:'center',
-    justifyContent:"center" 
-  }
-});
+export default MainStackNavigator;

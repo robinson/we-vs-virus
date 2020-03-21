@@ -12,6 +12,7 @@ using WeVsVirus.DataAccess.Repositories;
 using WeVsVirus.Business.Exceptions;
 using WeVsVirus.Business.Utility;
 using WeVsVirus.Business.ViewModels;
+using WeVsVirus.Business.Services;
 
 namespace WeVsVirus.WebApp.Api
 {
@@ -19,52 +20,55 @@ namespace WeVsVirus.WebApp.Api
     public class AccountController : Controller
     {
         public AccountController(
-            IJwtFactory jwtFactory,
-            IOptions<JwtIssuerOptions> jwtOptions,
-            UserManager<AppUser> userManager,
-            SignInManager<AppUser> signInManager,
-            IMapper mapper)
+            IAuthService authService)
         {
-            //if (jwtOptions == null)
-            //{
-            //    throw new ArgumentNullException(nameof(jwtOptions));
-            //}
-            JwtOptions = jwtOptions.Value;
-            UserManager = userManager;
-            SignInManager = signInManager;
-            JwtFactory = jwtFactory;
-            Mapper = mapper;
+            AuthService = authService;
         }
+        protected IAuthService AuthService { get; }
 
-
-        protected UserManager<AppUser> UserManager { get; }
-
-        protected SignInManager<AppUser> SignInManager { get; }
-        protected IJwtFactory JwtFactory { get; }
-
-        protected JwtIssuerOptions JwtOptions { get; }
-        protected IMapper Mapper { get; }
-
-        [HttpPost("")]
-        [HttpPost("[action]")]
+        [HttpPost("auth")]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public virtual async Task<IActionResult> NewUser([FromBody] SignUpViewModel model)
+        public async Task<IActionResult> Login([FromBody] LoginViewModel model)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    //var account = await AccountService.CreateNewUserAsync(model);
+
+                    var jwt = await AuthService.LoginAsync(model);
+                    return Ok(jwt);
+                }
+                catch (HttpStatusCodeException)
+                {
+                    throw;
+                }
+                catch
+                {
+                    throw new InternalServerErrorHttpException("Interner Serverfehler beim Einloggen.");
+                }
+            }
+            return BadRequest(ModelState);
+        }
+
+
+        [HttpPost("[action]")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    await AuthService.ResetPasswordAsync(model);
                     return Ok();
                 }
                 catch (HttpStatusCodeException)
                 {
                     throw;
                 }
-                catch (Exception e)
+                catch
                 {
-                    throw new InternalServerErrorHttpException(e);
+                    throw new InternalServerErrorHttpException("Interner Serverfehler beim Bestätigen eines Tokens.");
                 }
             }
             return BadRequest(ModelState);

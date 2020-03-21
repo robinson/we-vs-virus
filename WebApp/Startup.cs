@@ -20,6 +20,8 @@ using WeVsVirus.Business.Mappers;
 using System.Reflection;
 using WeVsVirus.DataAccess.DatabaseContext;
 using WeVsVirus.DataAccess;
+using WeVsVirus.Business.Services;
+using WeVsVirus.Business.Services.EmailServices;
 
 namespace WeVsVirus.WebApp
 {
@@ -43,6 +45,8 @@ namespace WeVsVirus.WebApp
 
             AddRepositories(services);
 
+            BindConfigurationVariables(services);
+            
             AddBusinessServices(services);
 
             services.AddControllers().AddNewtonsoftJson();
@@ -112,7 +116,6 @@ namespace WeVsVirus.WebApp
             {
                 app.UseStatusCodePages();
                 app.UseHttpStatusCodeExceptionMiddleware();
-                // app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
 
@@ -206,6 +209,8 @@ namespace WeVsVirus.WebApp
             services.AddAuthorization(options =>
             {
                 options.AddPolicy(PolicyNames.AnyUserPolicy, policy => policy.RequireClaim(Constants.Strings.JwtClaimIdentifiers.Rol, AccessRoles.ApiUser, AccessRoles.WebClientUser));
+                options.AddPolicy(PolicyNames.HealthOfficeUserPolicy, policy => policy.RequireClaim(Constants.Strings.JwtClaimIdentifiers.Rol, AccessRoles.HealthOfficeUser));
+                options.AddPolicy(PolicyNames.DriverUserPolicy, policy => policy.RequireClaim(Constants.Strings.JwtClaimIdentifiers.Rol, AccessRoles.DriverUser));
                 options.AddPolicy(PolicyNames.ApiUserPolicy, policy => policy.RequireClaim(Constants.Strings.JwtClaimIdentifiers.Rol, AccessRoles.ApiUser));
             });
 
@@ -227,6 +232,22 @@ namespace WeVsVirus.WebApp
 
         private void AddBusinessServices(IServiceCollection services)
         {
+            services.AddTransient<IAuthService, AuthService>();
+            services.AddTransient<IDriverAccountService, DriverAccountService>();
+            services.AddTransient<IEmailService, EmailService>();
+            services.AddTransient<IWeVsVirusEmailService, WeVsVirusEmailService>();
+            services.AddTransient<IAccountEmailService, AccountEmailService>();
+        }
+
+        private void BindConfigurationVariables(IServiceCollection services)
+        {
+            var emailTemplateIds = new EmailTemplateIdsConfiguration();
+            Configuration.GetSection("EmailTemplateIds").Bind(emailTemplateIds);
+            services.AddSingleton(emailTemplateIds);
+
+            var frontendConfiguration = new FrontendConfiguration();
+            Configuration.GetSection("Frontend").Bind(frontendConfiguration);
+            services.AddSingleton(frontendConfiguration);
         }
     }
 }
