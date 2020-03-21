@@ -41,9 +41,7 @@ function SignIn({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <View style= {styles.titleContainer}>
-    <Text style={styles.titleText}>Collectify!</Text>
-      </View>
+      
       <View style= {styles.loginFormContainer}>
       <Input inputContainerStyle = {styles.input}
         containerStyle ={{marginTop: 12, marginBottom:8}}
@@ -78,7 +76,7 @@ function SignIn({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex:1,
-    flexDirection:"column"
+    flexDirection:"column",
   },
   titleContainer: {
     flex: 0.5,
@@ -92,9 +90,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold"
   },
   loginFormContainer:{
-    flex: 0.5,
+    flex: 1,
     backgroundColor: '#3399ff',
-    padding: 12
+    padding: 12,
+    alignItems: "center",
+    justifyContent:'center'
   },
   input:{
     borderColor: 'white',
@@ -112,7 +112,8 @@ const styles = StyleSheet.create({
     alignItems:'center',
     borderRadius: 12,
     borderColor:'white',
-    borderWidth: 2
+    borderWidth: 2,
+    width: 300,
   },
   loginButtonText:{
     color: 'white',
