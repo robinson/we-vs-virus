@@ -27,6 +27,7 @@ function SignIn({navigation}) {
       if(myToken){
         setToken(myToken)
         SecureStore.setItemAsync("userToken",myToken);
+        alert(token)
         navigation.navigate('Home',{token:token});
       }
     }catch(e){
