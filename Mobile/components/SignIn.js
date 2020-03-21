@@ -25,8 +25,11 @@ function SignIn({ navigation }) {
           password: password,
         }),
       });
-      myToken = response.headers.get('Authorization')
-      if (myToken) {
+      
+      
+      const {myToken}=await response.json();
+      
+      if(myToken){
         setToken(myToken)
         SecureStore.setItemAsync("userToken", myToken);
         alert(token)
