@@ -20,6 +20,7 @@ using WeVsVirus.Business.Mappers;
 using System.Reflection;
 using WeVsVirus.DataAccess.DatabaseContext;
 using WeVsVirus.DataAccess;
+using WeVsVirus.Business.Services;
 
 namespace WeVsVirus.WebApp
 {
@@ -205,6 +206,8 @@ namespace WeVsVirus.WebApp
             services.AddAuthorization(options =>
             {
                 options.AddPolicy(PolicyNames.AnyUserPolicy, policy => policy.RequireClaim(Constants.Strings.JwtClaimIdentifiers.Rol, AccessRoles.ApiUser, AccessRoles.WebClientUser));
+                options.AddPolicy(PolicyNames.HealthOfficeUserPolicy, policy => policy.RequireClaim(Constants.Strings.JwtClaimIdentifiers.Rol, AccessRoles.HealthOfficeUser));
+                options.AddPolicy(PolicyNames.DriverUserPolicy, policy => policy.RequireClaim(Constants.Strings.JwtClaimIdentifiers.Rol, AccessRoles.DriverUser));
                 options.AddPolicy(PolicyNames.ApiUserPolicy, policy => policy.RequireClaim(Constants.Strings.JwtClaimIdentifiers.Rol, AccessRoles.ApiUser));
             });
 
@@ -226,6 +229,8 @@ namespace WeVsVirus.WebApp
 
         private void AddBusinessServices(IServiceCollection services)
         {
+            services.AddTransient<IAuthService, AuthService>();
+            services.AddTransient<IDriverAccountService, DriverAccountService>();
         }
     }
 }

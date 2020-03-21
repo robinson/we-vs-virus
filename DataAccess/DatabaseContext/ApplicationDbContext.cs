@@ -30,5 +30,7 @@ namespace WeVsVirus.DataAccess.DatabaseContext
 
             base.OnModelCreating(modelBuilder);
         }
+
+        public DbSet<DriverAccount> DriverAccounts { get; set; }
     }
 }
