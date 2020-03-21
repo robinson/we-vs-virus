@@ -26,7 +26,7 @@ function SignIn({navigation}) {
       myToken=response.headers.get('Authorization')
       if(myToken){
         setToken(myToken)
-        SecureStore.setItemAsync("usertoken",myToken);
+        SecureStore.setItemAsync("userToken",myToken);
         navigation.navigate('Home',{token:token});
       }
     }catch(e){
