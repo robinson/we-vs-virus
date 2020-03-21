@@ -7,13 +7,13 @@ RUN sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable 
 RUN apt-get update && apt-get install -yq google-chrome-stable
 
 # set working directory
-WORKDIR /ClientApp
+WORKDIR /WebApp
 
 # add `/ClientApp/node_modules/.bin` to $PATH
-ENV PATH /ClientApp/node_modules/.bin:$PATH
+ENV PATH WebApp/ClientApp/node_modules/.bin:$PATH
 
 # install and cache app dependencies
-COPY package.json /ClientApp/package.json
+COPY /WebApp/ClientApp/package.json package.json
 RUN npm install
 RUN npm install -g @angular/cli@7.3.9
 

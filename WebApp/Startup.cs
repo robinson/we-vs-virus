@@ -98,6 +98,7 @@ namespace WeVsVirus.WebApp
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider services, ApplicationDbContext databaseContext)
         {
+            //migrate when startup project
             databaseContext.Database.Migrate();
             if (env.IsDevelopment() || env.IsEnvironment("Development.Local"))
             {

@@ -1,14 +1,15 @@
-version: "3.3"
+version: "3.7"
 services:
     web:
         build:
             context: .
             dockerfile: WebApp/dockerfile
         volumes:
-            - '.:WebApp/ClientApp'
+            - '.:/WebApp/ClientApp'
             - 'WebApp/ClientApp/node_modules'
         ports:
-            - '4201:4200'
+            - '4200:4200'
+        command: yarn run start
     api:
         build: .
         ports:
