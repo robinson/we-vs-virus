@@ -27,6 +27,7 @@ namespace WeVsVirus.WebApp
 {
     public class Startup
     {
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -46,7 +47,7 @@ namespace WeVsVirus.WebApp
             AddRepositories(services);
 
             BindConfigurationVariables(services);
-            
+
             AddBusinessServices(services);
 
             services.AddControllers().AddNewtonsoftJson();
@@ -62,6 +63,19 @@ namespace WeVsVirus.WebApp
                 configuration.RootPath = "ClientApp/dist";
             });
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy(MyAllowSpecificOrigins,
+                builder =>
+                {
+                    // TODO don't allow any origin
+                    builder
+                    .AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+                });
+            });
+
             services.AddHsts(options =>
             {
                 options.Preload = true;
@@ -74,23 +88,25 @@ namespace WeVsVirus.WebApp
 
         private void AddDatabaseContext(IServiceCollection services)
         {
-            try {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("Sql"),
-                b => { b.MigrationsAssembly("DataAccess"); b.UseNetTopologySuite(); })
-            );
-
-            services.AddDbContext<DataProtectionKeyContext>(options =>
+            try
             {
-                options.UseSqlServer(Configuration.GetConnectionString("Sql"));
-                options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-                options.EnableSensitiveDataLogging();
-            })
-                .AddDataProtection()
-                .SetApplicationName("DataAccess")
-                .PersistKeysToDbContext<DataProtectionKeyContext>();
+                services.AddDbContext<ApplicationDbContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("Sql"),
+                    b => { b.MigrationsAssembly("DataAccess"); b.UseNetTopologySuite(); })
+                );
+
+                services.AddDbContext<DataProtectionKeyContext>(options =>
+                {
+                    options.UseSqlServer(Configuration.GetConnectionString("Sql"));
+                    options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+                    options.EnableSensitiveDataLogging();
+                })
+                    .AddDataProtection()
+                    .SetApplicationName("DataAccess")
+                    .PersistKeysToDbContext<DataProtectionKeyContext>();
             }
-            catch {
+            catch
+            {
                 Console.Error.Write("Could not connect to Database. Did you forget the connection string?");
             }
         }
@@ -119,6 +135,7 @@ namespace WeVsVirus.WebApp
             }
 
             app.UseRouting();
+            app.UseCors(MyAllowSpecificOrigins);
             app.UseHttpsRedirection();
 
             app.UseAuthentication();
