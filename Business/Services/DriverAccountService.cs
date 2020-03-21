@@ -10,6 +10,7 @@ using WeVsVirus.Models.Entities;
 using WeVsVirus.DataAccess;
 using WeVsVirus.Business.Utility;
 using WeVsVirus.Business.Exceptions;
+using WeVsVirus.Business.Services.EmailServices;
 
 namespace WeVsVirus.Business.Services
 {
@@ -17,21 +18,24 @@ namespace WeVsVirus.Business.Services
     {
         Task<DriverAccount> CreateNewUserAsync(SignUpDriverViewModel model);
     }
-    
+
     public class DriverAccountService : IDriverAccountService
     {
         public DriverAccountService(
             UserManager<AppUser> userManager,
             IMapper mapper,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork,
+            IAccountEmailService accountEmailService)
         {
             UnitOfWork = unitOfWork;
             UserManager = userManager;
             Mapper = mapper;
+            AccountEmailService = accountEmailService;
         }
         private UserManager<AppUser> UserManager { get; }
         private IUnitOfWork UnitOfWork { get; }
         private IMapper Mapper { get; }
+        private IAccountEmailService AccountEmailService { get; }
 
         public async Task<DriverAccount> CreateNewUserAsync(SignUpDriverViewModel model)
         {
@@ -56,7 +60,7 @@ namespace WeVsVirus.Business.Services
                         try
                         {
                             // TODO Send email with token to driver
-                            // await AccountEmailService.SendAdminOrSupportSignUpMailAsync(supportAccount);
+                            await AccountEmailService.SendDriverSignUpMailAsync(driverAccount);
                             await UnitOfWork.CompleteAsync();
                             await transaction.CommitAsync();
                             return driverAccount;

@@ -6,6 +6,7 @@ namespace WeVsVirus.Business.ViewModels
     {
         [Required(ErrorMessage = "Vorname fehlt")]
         public string Firstname { get; set; }
+        
         [Required(ErrorMessage = "Nachname fehlt")]
         public string Lastname { get; set; }
 
