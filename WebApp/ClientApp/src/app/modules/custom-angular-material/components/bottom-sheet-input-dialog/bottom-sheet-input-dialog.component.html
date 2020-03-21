@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>{{data.title}}</h1>
+<div mat-dialog-content>
+  <p>{{data.text}}</p>
+  <mat-form-field style="width: 100%">
+  <mat-label>{{data.inputLabel}}</mat-label>
+    <input required matInput [(ngModel)]="data.inputFieldValue">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="close($event, false)">{{data.declineText}}</button>
+<button mat-button color="primary" (click)="close($event, true)" cdkFocusInitial><span>{{data.acceptText}}</span><mat-icon class="ml-1" *ngIf="data.acceptIcon">{{data.acceptIcon}}</mat-icon></button>
+</div>
