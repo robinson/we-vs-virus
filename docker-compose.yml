@@ -5,8 +5,8 @@ services:
             context: .
             dockerfile: WebApp/dockerfile
         volumes:
-            - '.:/ClientApp'
-            - '/ClientApp/node_modules'
+            - '.:WebApp/ClientApp'
+            - 'WebApp/ClientApp/node_modules'
         ports:
             - '4201:4200'
     api:
