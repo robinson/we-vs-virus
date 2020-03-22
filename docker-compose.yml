@@ -1,38 +1,29 @@
-version: "3.7"
+version: '3.4'
 services:
-    web:
-        build:
-            context: .
-            dockerfile: WebApp/dockerfile
-        volumes:
-            - '.:/WebApp/ClientApp'
-            - 'WebApp/ClientApp/node_modules'
-        ports:
-            - '4200:4200'
-        command: yarn run start
-    api:
-        build: .
-        ports:
-            - "5000:5000"
-            - "5001:5001"
-        depends_on:
-            - db
-        networks:
-            mynetwork:
-                aliases:
-                - web1.internal.prod.example.com
-    db:
-        image: "mcr.microsoft.com/mssql/server:2019-latest"
-        ports:
-            - "1433:1433"
-        environment:
-            MSSQL_SA_PASSWORD: Test12341234
-            ACCEPT_EULA: "Y"
-        networks:
-            mynetwork:
-                aliases:
-                - db1.internal.prod.example.com
-networks:
-    mynetwork:
-        driver: bridge
-          
+  ui:
+    build: 
+      context: WebApp/ClientApp.
+      dockerfile: Dockerfile
+    environment:
+      NODE_ENV: production
+    ports:
+      - 5001:80
+    depends_on:
+      - webapi
+      - db
+  webapi:
+    build: 
+      context: .
+      dockerfile: dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+    ports:
+      - 5000:5000
+    depends_on:
+      - db
+  db:
+    image: 'mcr.microsoft.com/mssql/server:2017-latest'
+    environment:
+      MSSQP_SA_PASSWORD: 'Test12341234'
+      ACCEPT_EULA: 'Y'
+      MSSQL_PID: 'Express'
